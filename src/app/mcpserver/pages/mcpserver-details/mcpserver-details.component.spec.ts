@@ -6,7 +6,6 @@ import { TestbedHarnessEnvironment } from '@angular/cdk/testing/testbed'
 import { ComponentFixture, TestBed } from '@angular/core/testing'
 import { ActivatedRoute } from '@angular/router'
 import { LetDirective } from '@ngrx/component'
-import { ofType } from '@ngrx/effects'
 import { Store } from '@ngrx/store'
 import { MockStore, provideMockStore } from '@ngrx/store/testing'
 import { TranslatePipe, TranslateService } from '@ngx-translate/core'
@@ -177,16 +176,13 @@ describe('MCPServerDetailsComponent', () => {
     expect(overflowAction).toBeTruthy()
   })
 
-  it('should dispatch navigateBackButtonClicked action on back button click', async () => {
-    const doneFn = jest.fn()
+  it('should call history.back on back button click', async () => {
     const actions = await firstValueFrom(component.headerActions$)
     const backAction = actions.find((a) => a.labelKey === 'MCPSERVER_DETAILS.GENERAL.BACK')
 
-    store.scannedActions$.pipe(ofType(MCPServerDetailsActions.navigateBackButtonClicked)).subscribe(() => {
-      doneFn()
-    })
+    jest.spyOn(globalThis.history, 'back')
     backAction?.actionCallback?.()
-    expect(doneFn).toHaveBeenCalledTimes(1)
+    expect(globalThis.history.back).toHaveBeenCalledTimes(1)
   })
 
   it('should display item details in page header', async () => {
