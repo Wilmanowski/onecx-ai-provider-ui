@@ -15,8 +15,7 @@ nginx/**
 reports/**
 node_modules
 LICENSE
-CHANGELOG.md
-README.md
+*.md
 Dockerfile
 *.log
 *.sh
